@@ -3,15 +3,20 @@ import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = "your_jwt_secret_here";
- const TOKEN_EXPIRES = '24h';
+const JWT_SECRET = process.env.JWT_SECRET;
+const TOKEN_EXPIRES = "24h";
 
- const craeteToken = (userId) =>
-    jwt.sign({ userId }, JWT_SECRET, { expiresIn: TOKEN_EXPIRES });
+const createToken = (userId) => {
+    return jwt.sign(
+        { userId },
+        JWT_SECRET,
+        { expiresIn: TOKEN_EXPIRES }
+    );
+};
 
 //REGISTER A USER
 export async function registerUser(req, res){
-    const { name, email, passsword } = req.body;
+    const { name, email, password } = req.body;
     if(!name || !email || !password){
         return res.status(400).json({
             success: false,
@@ -24,7 +29,7 @@ export async function registerUser(req, res){
             message: "Invalid email"
         });
     }
-    if(pasword.legth < 8) {
+    if(password.length < 8) {
         return res.status(400).json({
             success: false,
             message: "Password must be atleast of 8 characters."
@@ -41,11 +46,11 @@ export async function registerUser(req, res){
 
         const hashed = await bcrypt.hash(password, 10);
         const user = await User.create({name, email, password: hashed});
-       const token = craeteToken(user._id);
-       res.status(201),json({
+       const token = createToken(user._id);
+       res.status(201).json({
         success: true,
         token,
-        user: {id:user._id, name: user.name, email: user.emaial}
+        user: {id:user._id, name: user.name, email: user.email}
        })
     }
 
@@ -72,7 +77,7 @@ export async function loginUser(req, res){
         const user = await User.findOne({email});
         if (!user){
             return res.status(401).json({
-                successs: false,
+                success: false,
                 message: "Invalid email or password"
            });
         }
@@ -85,7 +90,7 @@ export async function loginUser(req, res){
             });
         }
 
-        const token = craeteToken(user._id);
+        const token = createToken(user._id);
         res.json({
             success: true,
             token,
@@ -146,7 +151,7 @@ export async function updateProfile(req, res){
                 message: "Email already in use."
             });
         }
-        const user = await User.fubyidByIdAndUpdate(
+        const user = await User.findByIdAndUpdate(
             req.user.id,
             { name, email},
             { new: true, runValidators: true, select: "name email"}
@@ -169,7 +174,7 @@ export async function updateProfile(req, res){
 // TO CHANGE USER PASSWORD
 export async function updatePassword(req, res){
     const { currentPassword, newPassword }=req.body;
-     if (!currentPassword || !newPassword || newPasswod.length < 8) {
+     if (!currentPassword || !newPassword || newPassword.length < 8) {
         return res.status(400).json({
             success: false,
             message: "Password invalid or too short."
@@ -193,7 +198,7 @@ export async function updatePassword(req, res){
         }
         user.password = await bcrypt.hash(newPassword, 10);
         await user.save();
-        resjson({
+        res.json({
             success: true,
             message: "Password Changed"
         });
