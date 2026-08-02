@@ -44,7 +44,7 @@ import {
 } from "recharts";
 import AddTransactionModal from "../components/Add";
 
-const API_BASE = "https://smart-expense-tracker-backend-ah69.onrender.comapi";
+const API_BASE = "https://smart-expense-tracker-backend-ah69.onrender.com/api";
 
 const getAuthHeader = () => {
   const token =

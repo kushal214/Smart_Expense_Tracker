@@ -5,7 +5,7 @@ import { ChevronDown, LogOut, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const BASE_URL = "https://smart-expense-tracker-backend-ah69.onrender.comapi";
+const BASE_URL = "https://smart-expense-tracker-backend-ah69.onrender.com/api";
 
 const Navbar = ({ user: propUser, onLogout }) => {
   const navigate = useNavigate();
