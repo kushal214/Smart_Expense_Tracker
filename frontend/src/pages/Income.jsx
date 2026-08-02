@@ -31,7 +31,7 @@ import { getTimeFrameRange, generateChartPoints } from "../components/Helpers";
 import { INCOME_COLORS, CATEGORY_ICONS_Inc } from "../assets/color";
 import { incomeStyles as styles } from "../assets/dummyStyles";
 
-const API_BASE = "https://smart-expense-tracker-backend-ah69.onrender.com/api";
+const API_BASE = "https://smart-expense-tracker-backend-ah69.onrender.comapi";
 
 //helps in converting date to ISO time
 function toIsoWithClientTime(dateValue) {

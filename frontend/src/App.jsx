@@ -15,7 +15,7 @@ import Income from "./pages/Income";
 import Expense from "./pages/Expense";
 import Profile from "./pages/Profile";
 
-const API_URL = "https://smart-expense-tracker-backend-ah69.onrender.com/";
+const API_URL = "https://smart-expense-tracker-backend-ah69.onrender.com";
 
 // to get transaction from localstorage
 const getTransactionsFromStorage = () => {
