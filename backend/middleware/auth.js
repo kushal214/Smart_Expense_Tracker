@@ -16,10 +16,12 @@ export default async function authMiddleware(req, res, next) {
     const token = authHeader.split(" ")[1];
 
     try {
+        console.log("JWT_SECRET:", JWT_SECRET); // Log the JWT secret for debugging
+
         const payload = jwt.verify(token, JWT_SECRET);
 
         const user = await User.findById(payload.userId).select("-password");
-
+        
         if (!user) {
             return res.status(401).json({
                 success: false,
